@@ -1,0 +1,71 @@
+<div class="register-container">
+  <div class="register-form">
+    <h1>Register</h1>
+    <p class="subtitle">Create a new account to get started</p>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input 
+          id="username"
+          type="text"
+          formControlName="username"
+          placeholder="johndoe"
+          [class.error]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+        >
+        @if (registerForm.get('username')?.errors?.['required'] && registerForm.get('username')?.touched) {
+          <span class="error-message">Username is required</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="you@example.com"
+          [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        >
+        @if (registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched) {
+          <span class="error-message">Email is required</span>
+        }
+        @if (registerForm.get('email')?.errors?.['email']) {
+          <span class="error-message">Please enter a valid email</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-field">
+          <input 
+            id="password"
+            [type]="hidePassword() ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="••••••••"
+            [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+          >
+          <button 
+            type="button" 
+            mat-icon-button 
+            (click)="hidePassword.set(!hidePassword())"
+            class="visibility-toggle"
+          >
+            <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </div>
+        @if (registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched) {
+          <span class="error-message">Password is required</span>
+        }
+      </div>
+
+      <button type="submit" class="register-btn" [disabled]="registerForm.invalid">
+        Register
+      </button>
+
+      <p class="signin-container">
+        Already have an account? <a routerLink="/login">Login</a>
+      </p>
+    </form>
+  </div>
+</div>
