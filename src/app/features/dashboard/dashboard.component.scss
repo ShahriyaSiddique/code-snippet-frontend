@@ -31,6 +31,11 @@
       font-size: 1rem;
     }
   }
+
+  .header-actions {
+    display: flex;
+    gap: 1rem;
+  }
 }
 
 .stats-grid {

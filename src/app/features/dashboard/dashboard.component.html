@@ -9,10 +9,12 @@
         <h1>Welcome back, {{ authService.user()?.name }}! 👋</h1>
         <p class="subtitle">Manage your code snippets and see your activity</p>
       </div>
-      <button mat-raised-button color="warn" (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        Logout
-      </button>
+      <div class="header-actions">
+        <button mat-raised-button color="primary" routerLink="/snippets/create">
+          <mat-icon>add</mat-icon>
+          Create Snippet
+        </button>
+      </div>
     </header>
 
     <section class="recent-snippets">

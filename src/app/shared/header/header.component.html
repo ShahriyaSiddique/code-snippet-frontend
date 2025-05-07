@@ -7,10 +7,23 @@
     <div class="nav-links">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
       <a routerLink="/snippets" routerLinkActive="active">Snippets</a>
+      @if (authService.isAuthenticated()) {
+        <a routerLink="/snippets/create" routerLinkActive="active" class="create-btn">
+          <mat-icon>add</mat-icon>
+          Create Snippet
+        </a>
+      }
     </div>
 
     <div class="auth-buttons">
-      <a routerLink="/login" class="login-btn">Login</a>
+      @if (authService.isAuthenticated()) {
+        <button mat-button (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Logout
+        </button>
+      } @else {
+        <a routerLink="/login" class="login-btn">Login</a>
+      }
     </div>
 
     <button class="menu-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
@@ -23,7 +36,12 @@
       <div class="mobile-menu">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         <a routerLink="/snippets" routerLinkActive="active">Snippets</a>
-        <a routerLink="/login" class="mobile-login">Login</a>
+        @if (authService.isAuthenticated()) {
+          <a routerLink="/snippets/create" routerLinkActive="active">Create Snippet</a>
+          <button mat-button (click)="logout()">Logout</button>
+        } @else {
+          <a routerLink="/login" class="mobile-login">Login</a>
+        }
       </div>
     }
   </nav>
