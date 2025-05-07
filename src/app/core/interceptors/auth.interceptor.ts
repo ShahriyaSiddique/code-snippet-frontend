@@ -1,13 +1,13 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { inject, PLATFORM_ID } from '@angular/core';
 import { tap } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
-  const token = authService.getToken();
+  const platformId = inject(PLATFORM_ID);
+  const isBrowser = isPlatformBrowser(platformId);
 
-  console.log('Request URL:', req.url);
+  const token = isBrowser ? localStorage.getItem('access_token') : null;
   
   let headers: Record<string, string> = {
     'Content-Type': 'application/json',

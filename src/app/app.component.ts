@@ -1,15 +1,52 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/header/header.component';
+import { AuthService } from './core/services/auth.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule, HeaderComponent],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  imports: [CommonModule, RouterModule, HeaderComponent, RouterOutlet, NgIf],
+  template: `
+    <div *ngIf="authService.isLoading(); else appContent">
+      <div class="spinner-overlay">
+        <div class="spinner"></div>
+      </div>
+    </div>
+    <ng-template #appContent>
+      <app-header />
+      <router-outlet />
+    </ng-template>
+  `,
+  styles: [`
+    .spinner-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.5);
+      z-index: 9999;
+    }
+    .spinner {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #3498db;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  `]
 })
 export class AppComponent {
-  title = 'code-gist-frontend';
+  protected readonly authService = inject(AuthService);
 }
