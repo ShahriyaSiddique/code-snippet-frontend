@@ -1,0 +1,36 @@
+<div class="snippets-container">
+  <div class="snippets-header">
+    <h1>Code Snippets</h1>
+    <button mat-raised-button color="primary" (click)="onCreateNew()">
+      <mat-icon>add</mat-icon>
+      New Snippet
+    </button>
+  </div>
+
+  @if (error()) {
+    <div class="error-alert">
+      {{ error() }}
+    </div>
+  }
+
+  @if (isLoading()) {
+    <div class="loading-spinner">
+      Loading snippets...
+    </div>
+  } @else {
+    @if (snippets().length === 0) {
+      <div class="no-snippets">
+        <p>No snippets found. Create your first snippet!</p>
+      </div>
+    } @else {
+      <div class="snippets-grid">
+        @for (snippet of snippets(); track snippet.id) {
+          <app-snippet-card
+            [snippet]="snippet"
+            (edit)="onEdit($event)"
+          ></app-snippet-card>
+        }
+      </div>
+    }
+  }
+</div> 
