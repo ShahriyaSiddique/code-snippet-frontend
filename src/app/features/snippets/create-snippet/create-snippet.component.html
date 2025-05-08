@@ -1,0 +1,67 @@
+<div class="create-snippet-container">
+  <div class="create-snippet-form">
+    <h1>Create New Snippet</h1>
+    <p class="subtitle">Share your code with others</p>
+
+    @if (error()) {
+      <div class="error-alert">
+        {{ error() }}
+      </div>
+    }
+    
+    <form [formGroup]="snippetForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" placeholder="My awesome code">
+          @if (snippetForm.get('title')?.errors?.['required'] && snippetForm.get('title')?.touched) {
+            <mat-error>Title is required</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Language</mat-label>
+          <mat-select formControlName="language">
+            @for (option of languageOptions; track option.value) {
+              <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" rows="2" placeholder="A brief description of your code"></textarea>
+      </mat-form-field>
+
+      <div class="code-editor-container" [class.error]="snippetForm.get('code')?.invalid && snippetForm.get('code')?.touched">
+        <label>Code</label>
+        <div class="editor-wrapper">
+          <div 
+            [appCodeMirror]="snippetForm.get('code')?.value || ''"
+            [language]="snippetForm.get('language')?.value!"
+            (codeChange)="snippetForm.patchValue({ code: $event })"
+          ></div>
+        </div>
+        @if (snippetForm.get('code')?.errors?.['required'] && snippetForm.get('code')?.touched) {
+          <span class="error-message">Code is required</span>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="submit"
+          [disabled]="!snippetForm.valid || isLoading()"
+        >
+          @if (isLoading()) {
+            Creating...
+          } @else {
+            Create Snippet
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
