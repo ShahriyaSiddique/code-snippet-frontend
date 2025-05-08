@@ -5,8 +5,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Router } from '@angular/router';
 import { CodeMirrorDirective } from '../../../shared/directives/codemirror.directive';
+import { Snippet } from '../../../core/interfaces/snippet.interfaces';
+import { SnippetService } from '../../../core/services/snippet.service';
 
 @Component({
   selector: 'app-create-snippet',
@@ -18,6 +21,7 @@ import { CodeMirrorDirective } from '../../../shared/directives/codemirror.direc
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatCheckboxModule,
     CodeMirrorDirective
   ],
   templateUrl: './create-snippet.component.html',
@@ -26,6 +30,7 @@ import { CodeMirrorDirective } from '../../../shared/directives/codemirror.direc
 export class CreateSnippetComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private snippetService = inject(SnippetService);
   
   isLoading = signal(false);
   error = signal<string | null>(null);
@@ -40,9 +45,9 @@ export class CreateSnippetComponent {
 
   snippetForm = this.fb.group({
     title: ['', [Validators.required]],
-    description: [''],
     language: ['javascript'],
-    code: ['', [Validators.required]]
+    code: ['', [Validators.required]],
+    isPublic: [false]
   });
 
   async onSubmit() {
@@ -50,11 +55,17 @@ export class CreateSnippetComponent {
       this.isLoading.set(true);
       this.error.set(null);
       
-      // TODO: Implement snippet creation logic
-      console.log('Form submitted:', this.snippetForm.value);
+      const snippet: Snippet = this.snippetForm.value as Snippet;
       
-      this.isLoading.set(false);
-      await this.router.navigate(['/snippets']);
+      this.snippetService.createSnippet(snippet).subscribe({
+        next: () => {
+          console.log('Snippet created successfully');
+          this.router.navigate(['/snippets']);
+        },
+        error: (err) => {
+          this.error.set('Failed to create snippet'); // Handle error
+        }
+      });
     }
   }
 }

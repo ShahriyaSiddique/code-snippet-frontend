@@ -27,12 +27,11 @@
             }
           </mat-select>
         </mat-form-field>
-      </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Description</mat-label>
-        <textarea matInput formControlName="description" rows="2" placeholder="A brief description of your code"></textarea>
-      </mat-form-field>
+        <div appearance="outline">
+          <mat-checkbox formControlName="isPublic">Public Snippet</mat-checkbox>
+        </div>
+      </div>
 
       <div class="code-editor-container" [class.error]="snippetForm.get('code')?.invalid && snippetForm.get('code')?.touched">
         <label>Code</label>
