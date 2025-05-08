@@ -1,7 +1,7 @@
-<div class="create-snippet-container">
-  <div class="create-snippet-form">
-    <h1>Create New Snippet</h1>
-    <p class="subtitle">Share your code with others</p>
+<div class="update-snippet-container">
+  <div class="update-snippet-form">
+    <h1>Update Snippet</h1>
+    <p class="subtitle">Edit your code snippet</p>
 
     @if (error()) {
       <div class="error-alert">
@@ -28,8 +28,10 @@
           </mat-select>
         </mat-form-field>
 
-        <div appearance="outline" class="checkbox-container">
-          <mat-checkbox formControlName="isPublic">Public Snippet</mat-checkbox>
+        <div class="checkbox-container">
+          <mat-checkbox formControlName="isPublic" color="primary">
+            Public Snippet
+          </mat-checkbox>
         </div>
       </div>
 
@@ -55,12 +57,12 @@
           [disabled]="!snippetForm.valid || isLoading()"
         >
           @if (isLoading()) {
-            Creating...
+            Updating...
           } @else {
-            Create Snippet
+            Update Snippet
           }
         </button>
       </div>
     </form>
   </div>
-</div>
+</div> 

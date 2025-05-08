@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, Input, Output, OnDestroy, OnInit } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, Input, Output, OnDestroy, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { EditorState } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
@@ -23,7 +23,7 @@ const myHighlightStyle = HighlightStyle.define([
   selector: '[appCodeMirror]',
   standalone: true
 })
-export class CodeMirrorDirective implements OnInit, OnDestroy {
+export class CodeMirrorDirective implements OnInit, OnDestroy, OnChanges {
   @Input('appCodeMirror') code = '';
   @Input() language = 'javascript';
   @Output() codeChange = new EventEmitter<string>();
@@ -44,6 +44,27 @@ export class CodeMirrorDirective implements OnInit, OnDestroy {
         return css();
       default:
         return javascript();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['code'] && this.view && !changes['code'].firstChange) {
+      const currentValue = this.view.state.doc.toString();
+      if (currentValue !== changes['code'].currentValue) {
+        this.updateEditorContent(changes['code'].currentValue);
+      }
+    }
+  }
+
+  private updateEditorContent(newContent: string) {
+    if (this.view) {
+      this.view.dispatch({
+        changes: {
+          from: 0,
+          to: this.view.state.doc.length,
+          insert: newContent
+        }
+      });
     }
   }
 

@@ -1,11 +1,11 @@
-.create-snippet-container {
+.update-snippet-container {
   display: flex;
   justify-content: center;
   padding: 2rem;
   margin-top: 64px;
 }
 
-.create-snippet-form {
+.update-snippet-form {
   background-color: #1e293b;
   padding: clamp(1.5rem, 5vw, 2.5rem);
   border-radius: 12px;
@@ -165,15 +165,15 @@
 }
 
 @media (max-width: 640px) {
-  .create-snippet-container {
+  .update-snippet-container {
     padding: 1rem;
   }
 
-  .create-snippet-form {
+  .update-snippet-form {
     padding: 1.25rem;
 
     .form-row {
       grid-template-columns: 1fr;
     }
   }
-}
+} 
