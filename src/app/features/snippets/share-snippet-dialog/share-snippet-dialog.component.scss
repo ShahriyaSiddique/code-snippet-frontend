@@ -1,0 +1,115 @@
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  min-height: 150px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.error-message {
+  color: #f44336;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  padding: 0.75rem;
+  background-color: rgba(244, 67, 54, 0.1);
+  border-radius: 4px;
+  border-left: 4px solid #f44336;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .error-icon {
+    font-size: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+mat-dialog-content {
+  min-width: 400px;
+  padding: 1.5rem;
+}
+
+mat-dialog-title {
+  margin: 0;
+  padding: 1.5rem 1.5rem 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  .dialog-icon {
+    color: #1976d2;
+  }
+}
+
+.form-container {
+  margin: 1rem 0;
+}
+
+mat-form-field {
+  margin-top: 1rem;
+
+  ::ng-deep {
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .mat-mdc-form-field-infix {
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+  }
+}
+
+.user-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+
+  .user-icon {
+    color: #666;
+    font-size: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+mat-dialog-actions {
+  padding: 1rem 1.5rem;
+  margin: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+  button {
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    mat-icon {
+      font-size: 1.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    &[color="primary"] {
+      background-color: #1976d2;
+      color: white;
+
+      &:hover {
+        background-color: #1565c0;
+      }
+
+      &:disabled {
+        background-color: rgba(25, 118, 210, 0.5);
+      }
+    }
+  }
+}

@@ -31,4 +31,10 @@ export class SnippetService {
   deleteSnippet(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  shareSnippet(snippetId: string, sharedWithId: Array<string>): Observable<ServerResponse<any>> {
+    return this.http.post<ServerResponse<any>>(`${this.apiUrl}/${snippetId}/share`, {
+      userIds: sharedWithId
+    });
+  }
 }

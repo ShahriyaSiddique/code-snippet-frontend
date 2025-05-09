@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>
+  <mat-icon class="dialog-icon">share</mat-icon>
+  Share Snippet
+</h2>
+<mat-dialog-content>
+  @if (isLoading()) {
+  <div class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+  } @else {
+  <div class="form-container">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Select User</mat-label>
+      <mat-select [value]="selectedUserId()" (selectionChange)="selectedUserId.set($event.value)">
+        @for (user of users(); track user.id) {
+        <mat-option [value]="user.id.toString()">
+          <div class="user-option">
+            <!-- <mat-icon class="user-icon">person</mat-icon> -->
+            <span>{{ user.name }}</span>
+          </div>
+        </mat-option>
+        }
+      </mat-select>
+      <mat-icon matSuffix>person_search</mat-icon>
+    </mat-form-field>
+  </div>
+  }
+
+  @if (error()) {
+  <div class="error-message">
+    <mat-icon class="error-icon">error</mat-icon>
+    {{ error() }}
+  </div>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="dialogRef.close()">
+    <mat-icon>close</mat-icon>
+    Cancel
+  </button>
+  <button mat-raised-button color="primary" (click)="onShare()" [disabled]="!selectedUserId() || isLoading()">
+    <mat-icon>share</mat-icon>
+    Share
+  </button>
+</mat-dialog-actions>
