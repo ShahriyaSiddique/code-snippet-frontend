@@ -111,12 +111,37 @@
   .code-editor-container {
     margin: 1.5rem 0;
 
-    label {
-      display: block;
-      color: #e2e8f0;
-      font-size: 0.875rem;
-      font-weight: 500;
+    .editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 0.5rem;
+
+      label {
+        color: #e2e8f0;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      .collaborators {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+
+        .collaborator {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 0.75rem;
+          font-weight: 500;
+          border: 2px solid #0f172a;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+      }
     }
 
     .editor-wrapper {

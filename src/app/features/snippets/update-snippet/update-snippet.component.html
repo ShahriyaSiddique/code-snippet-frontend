@@ -36,12 +36,22 @@
       </div>
 
       <div class="code-editor-container" [class.error]="snippetForm.get('code')?.invalid && snippetForm.get('code')?.touched">
-        <label>Code</label>
+        <div class="editor-header">
+          <label>Code</label>
+          <div class="collaborators">
+            @for (user of collaborators(); track user.name) {
+              <div class="collaborator" [style.background-color]="user.color">
+                {{ user.name[0] }}
+              </div>
+            }
+          </div>
+        </div>
         <div class="editor-wrapper">
           <div 
             [appCodeMirror]="snippetForm.get('code')?.value || ''"
             [language]="snippetForm.get('language')?.value!"
             (codeChange)="snippetForm.patchValue({ code: $event })"
+            (usersChange)="onUsersChange($event)"
           ></div>
         </div>
         @if (snippetForm.get('code')?.errors?.['required'] && snippetForm.get('code')?.touched) {
