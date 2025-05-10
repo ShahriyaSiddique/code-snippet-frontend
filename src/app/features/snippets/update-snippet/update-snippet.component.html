@@ -60,16 +60,15 @@
       </div>
 
       <div class="form-actions">
-        <button 
-          mat-raised-button 
-          color="primary" 
-          type="submit"
-          [disabled]="!snippetForm.valid || isLoading()"
-        >
+        <button mat-raised-button color="primary" type="button" [disabled]="!snippetForm.valid || isLoading()"
+          (click)="codeMirror.formatCode()">
+          Format Code
+        </button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!snippetForm.valid || isLoading()">
           @if (isLoading()) {
-            Updating...
+          Updating...
           } @else {
-            Update Snippet
+          Update Snippet
           }
         </button>
       </div>

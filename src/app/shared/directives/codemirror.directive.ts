@@ -5,9 +5,13 @@ import { css } from '@codemirror/lang-css';
 import { html } from '@codemirror/lang-html';
 import { javascript } from '@codemirror/lang-javascript';
 import { bracketMatching, foldGutter, HighlightStyle, syntaxHighlighting } from '@codemirror/language';
+import { highlightSelectionMatches } from '@codemirror/search';
 import { EditorState } from '@codemirror/state';
 import { EditorView, highlightActiveLine, keymap, lineNumbers } from '@codemirror/view';
 import { tags } from '@lezer/highlight';
+import prettier from 'prettier';
+import * as prettierPluginBabel from 'prettier/plugins/babel';
+import prettierPluginEstree from 'prettier/plugins/estree';
 import { Awareness } from 'y-protocols/awareness';
 import { WebsocketProvider } from 'y-websocket';
 import * as Y from 'yjs';
@@ -135,6 +139,7 @@ export class CodeMirrorDirective implements OnInit, OnDestroy, OnChanges {
         history(),
         bracketMatching(),
         highlightActiveLine(),
+        highlightSelectionMatches(),
         this.getLanguageSupport(this.language),
         syntaxHighlighting(myHighlightStyle),
         keymap.of([...defaultKeymap, ...closeBracketsKeymap, ...historyKeymap, indentWithTab]),
@@ -221,6 +226,30 @@ export class CodeMirrorDirective implements OnInit, OnDestroy, OnChanges {
         }
       }
     });
+  }
+
+  async formatCode(): Promise<void> {
+    if (!this.view) return;
+    try {
+      const code = this.view.state.doc.toString();
+      const formattedCode = await prettier.format(code, {
+        parser: 'babel',
+        plugins: [prettierPluginBabel, prettierPluginEstree],
+        tabWidth: 2,
+        semi: true,
+        trailingComma: 'es5',
+      });
+
+      this.view.dispatch({
+        changes: {
+          from: 0,
+          to: this.view.state.doc.length,
+          insert: formattedCode,
+        },
+      });
+    } catch (error) {
+      console.error('Prettier formatting error:', error);
+    }
   }
 
   ngOnDestroy() {
