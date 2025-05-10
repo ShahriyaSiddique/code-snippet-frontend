@@ -1,11 +1,12 @@
 import { Directive, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { defaultKeymap } from '@codemirror/commands';
+import { closeBrackets, closeBracketsKeymap } from '@codemirror/autocomplete';
+import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
 import { css } from '@codemirror/lang-css';
 import { html } from '@codemirror/lang-html';
 import { javascript } from '@codemirror/lang-javascript';
-import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
+import { bracketMatching, foldGutter, HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { EditorState } from '@codemirror/state';
-import { EditorView, keymap } from '@codemirror/view';
+import { EditorView, highlightActiveLine, keymap, lineNumbers } from '@codemirror/view';
 import { tags } from '@lezer/highlight';
 import { Awareness } from 'y-protocols/awareness';
 import { WebsocketProvider } from 'y-websocket';
@@ -41,7 +42,7 @@ export class CodeMirrorDirective implements OnInit, OnDestroy, OnChanges {
   @Input() userColor = '#8b5cf6';
   @Output() codeChange = new EventEmitter<string>();
   @Output() usersChange = new EventEmitter<Array<{ name: string; color: string }>>();
-  
+
   private view: EditorView | null = null;
   private ydoc: Y.Doc | null = null;
   private ytext: Y.Text | null = null;
@@ -94,7 +95,7 @@ export class CodeMirrorDirective implements OnInit, OnDestroy, OnChanges {
   private setupCollaboration() {
     this.ydoc = new Y.Doc();
     this.ytext = this.ydoc.getText('codemirror');
-    
+
     this.provider = new WebsocketProvider(
       'ws://localhost:1234',
       this.roomId,
@@ -128,9 +129,15 @@ export class CodeMirrorDirective implements OnInit, OnDestroy, OnChanges {
     const startState = EditorState.create({
       doc: this.code,
       extensions: [
+        lineNumbers(),
+        foldGutter(),
+        closeBrackets(),
+        history(),
+        bracketMatching(),
+        highlightActiveLine(),
         this.getLanguageSupport(this.language),
         syntaxHighlighting(myHighlightStyle),
-        keymap.of(defaultKeymap),
+        keymap.of([...defaultKeymap, ...closeBracketsKeymap, ...historyKeymap, indentWithTab]),
         EditorView.updateListener.of(update => {
           if (update.docChanged) {
             const newContent = update.state.doc.toString();
