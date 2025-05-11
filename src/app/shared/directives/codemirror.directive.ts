@@ -122,7 +122,7 @@ export class CodeMirrorDirective implements OnInit, OnDestroy, OnChanges {
       this.usersChange.emit(states);
     });
 
-    if (this.code) {
+    if (this.code && this.ytext.length === 0) {
       this.ytext.insert(0, this.code);
     }
   }
@@ -130,101 +130,103 @@ export class CodeMirrorDirective implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     this.setupCollaboration();
 
-    const startState = EditorState.create({
-      doc: this.code,
-      extensions: [
-        lineNumbers(),
-        foldGutter(),
-        closeBrackets(),
-        history(),
-        bracketMatching(),
-        highlightActiveLine(),
-        highlightSelectionMatches(),
-        this.getLanguageSupport(this.language),
-        syntaxHighlighting(myHighlightStyle),
-        keymap.of([...defaultKeymap, ...closeBracketsKeymap, ...historyKeymap, indentWithTab]),
-        EditorView.updateListener.of(update => {
-          if (update.docChanged) {
-            const newContent = update.state.doc.toString();
-            this.codeChange.emit(newContent);
-            
-            if (this.ytext) {
-              const currentContent = this.ytext.toString();
-              if (currentContent !== newContent) {
-                this.ydoc?.transact(() => {
-                  this.ytext?.delete(0, currentContent.length);
-                  this.ytext?.insert(0, newContent);
-                });
+    this.provider?.on('sync', () => {
+      const startState = EditorState.create({
+        doc: this.ytext?.toString() || this.code,
+        extensions: [
+          lineNumbers(),
+          foldGutter(),
+          closeBrackets(),
+          history(),
+          bracketMatching(),
+          highlightActiveLine(),
+          highlightSelectionMatches(),
+          this.getLanguageSupport(this.language),
+          syntaxHighlighting(myHighlightStyle),
+          keymap.of([...defaultKeymap, ...closeBracketsKeymap, ...historyKeymap, indentWithTab]),
+          EditorView.updateListener.of(update => {
+            if (update.docChanged) {
+              const newContent = update.state.doc.toString();
+              this.codeChange.emit(newContent);
+              
+              if (this.ytext) {
+                const currentContent = this.ytext.toString();
+                if (currentContent !== newContent) {
+                  this.ydoc?.transact(() => {
+                    this.ytext?.delete(0, currentContent.length);
+                    this.ytext?.insert(0, newContent);
+                  });
+                }
               }
             }
-          }
-        }),
-        EditorView.editable.of(true),
-        EditorView.theme({
-          '&': {
-            height: '100%',
-            fontSize: '14px',
-            backgroundColor: '#0f172a'
-          },
-          '.cm-scroller': {
-            overflow: 'auto',
-            height: '100%'
-          },
-          '.cm-content': {
-            fontFamily: 'monospace',
-            padding: '10px',
-            color: '#d4d4d4',
-            minHeight: '100%',
-            caretColor: '#d4d4d4'
-          },
-          '.cm-line': {
-            padding: '0 3px',
-            lineHeight: '1.6',
-            fontFamily: 'monospace'
-          },
-          '.cm-matchingBracket': {
-            backgroundColor: '#1e293b',
-            color: '#8b5cf6'
-          },
-          '.cm-activeLine': {
-            backgroundColor: 'rgba(139, 92, 246, 0.1)'
-          },
-          '.cm-gutters': {
-            backgroundColor: '#0f172a',
-            color: '#858585',
-            border: 'none'
-          },
-          '.cm-lineNumbers': {
-            color: '#858585'
-          },
-          '&.cm-focused': {
-            outline: 'none'
-          }
-        }, { dark: true })
-      ]
-    });
-
-    this.view = new EditorView({
-      state: startState,
-      parent: this.element.nativeElement
-    });
-
-    this.ytext?.observe(event => {
-      if (this.view) {
-        const currentContent = this.view.state.doc.toString();
-        const newContent = this.ytext!.toString();
-        if (currentContent !== newContent) {
-          const cursorPos = this.view.state.selection.main.head;
-          this.view.dispatch({
-            changes: {
-              from: 0,
-              to: this.view.state.doc.length,
-              insert: newContent
+          }),
+          EditorView.editable.of(true),
+          EditorView.theme({
+            '&': {
+              height: '100%',
+              fontSize: '14px',
+              backgroundColor: '#0f172a'
             },
-            selection: { anchor: cursorPos, head: cursorPos }
-          });
+            '.cm-scroller': {
+              overflow: 'auto',
+              height: '100%'
+            },
+            '.cm-content': {
+              fontFamily: 'monospace',
+              padding: '10px',
+              color: '#d4d4d4',
+              minHeight: '100%',
+              caretColor: '#d4d4d4'
+            },
+            '.cm-line': {
+              padding: '0 3px',
+              lineHeight: '1.6',
+              fontFamily: 'monospace'
+            },
+            '.cm-matchingBracket': {
+              backgroundColor: '#1e293b',
+              color: '#8b5cf6'
+            },
+            '.cm-activeLine': {
+              backgroundColor: 'rgba(139, 92, 246, 0.1)'
+            },
+            '.cm-gutters': {
+              backgroundColor: '#0f172a',
+              color: '#858585',
+              border: 'none'
+            },
+            '.cm-lineNumbers': {
+              color: '#858585'
+            },
+            '&.cm-focused': {
+              outline: 'none'
+            }
+          }, { dark: true })
+        ]
+      });
+
+      this.view = new EditorView({
+        state: startState,
+        parent: this.element.nativeElement
+      });
+
+      this.ytext?.observe(event => {
+        if (this.view) {
+          const currentContent = this.view.state.doc.toString();
+          const newContent = this.ytext!.toString();
+          if (currentContent !== newContent) {
+            const cursorPos = this.view.state.selection.main.head;
+            this.view.dispatch({
+              changes: {
+                from: 0,
+                to: this.view.state.doc.length,
+                insert: newContent
+              },
+              selection: { anchor: cursorPos, head: cursorPos }
+            });
+          }
         }
-      }
+      });
     });
   }
 
