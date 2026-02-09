@@ -1,4 +1,9 @@
-<app-header></app-header>
-<main>
-  <router-outlet></router-outlet>
-</main>
+<div *ngIf="authService.isLoading(); else appContent">
+  <div class="spinner-overlay">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>
+<ng-template #appContent>
+  <app-header />
+  <router-outlet />
+</ng-template>
