@@ -1,0 +1,36 @@
+<div class="snippets-container">
+  <div class="snippets-header">
+    <h1>Public Snippets</h1>
+    <p class="subtitle">Browse shared code snippets from the community</p>
+  </div>
+
+  @if (error()) {
+    <div class="error-alert">
+      {{ error() }}
+    </div>
+  }
+
+  @if (isLoading()) {
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  } @else {
+    @if (snippets().length === 0) {
+      <div class="no-snippets">
+        <mat-icon class="empty-icon">code_off</mat-icon>
+        <p>No public snippets yet. Check back later!</p>
+      </div>
+    } @else {
+      <div class="snippets-grid">
+        @for (snippet of snippets(); track snippet.id) {
+          <app-snippet-card
+            [snippet]="snippet"
+            [actions]="false"
+            [viewOnClick]="true"
+            (view)="onView($event)"
+          ></app-snippet-card>
+        }
+      </div>
+    }
+  }
+</div>

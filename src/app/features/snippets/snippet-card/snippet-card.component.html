@@ -1,4 +1,8 @@
-<mat-card class="snippet-card">
+<mat-card
+  class="snippet-card"
+  [class.clickable]="viewOnClick"
+  (click)="viewOnClick && view.emit(snippet)"
+>
   <mat-card-header>
     <mat-card-title>{{ snippet.title }}</mat-card-title>
     <mat-card-subtitle>

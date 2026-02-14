@@ -1,6 +1,16 @@
 .snippet-card {
   height: 100%;
   display: flex;
+
+  &.clickable {
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+  }
   flex-direction: column;
   background-color: #1e293b;
   border: 1px solid #334155;

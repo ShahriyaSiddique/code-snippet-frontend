@@ -1,11 +1,12 @@
 <header class="header">
   <nav class="nav-container">
     <div class="logo">
-      <a routerLink="/" class="logo-text">CodeGist</a>
+      <a routerLink="/" class="logo-text">CodeSnippet</a>
     </div>
     
     <div class="nav-links">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+      <a routerLink="/public" routerLinkActive="active">Public Snippets</a>
       <a routerLink="/snippets" routerLinkActive="active">Snippets</a>
       <a routerLink="/shared" routerLinkActive="active">Shared with Me</a>
       @if (authService.isAuthenticated()) {
@@ -36,6 +37,7 @@
     @if (isMenuOpen) {
       <div class="mobile-menu">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        <a routerLink="/public" routerLinkActive="active">Public Snippets</a>
         <a routerLink="/snippets" routerLinkActive="active">Snippets</a>
         <a routerLink="/shared" routerLinkActive="active">Shared with Me</a>
         @if (authService.isAuthenticated()) {

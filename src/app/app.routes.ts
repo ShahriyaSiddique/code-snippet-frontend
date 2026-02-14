@@ -32,5 +32,9 @@ export const routes: Routes = [
     path: 'shared',
     loadComponent: () => import('./features/snippets/shared-snippets/shared-snippets.component').then(m => m.SharedSnippetsComponent),
     canActivate: [authGuard]
+  },
+  {
+    path: 'public',
+    loadComponent: () => import('./features/snippets/public-snippets/public-snippets.component').then(m => m.PublicSnippetsComponent)
   }
 ];

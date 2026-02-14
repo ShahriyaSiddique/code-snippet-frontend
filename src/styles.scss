@@ -22,6 +22,15 @@ body {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
+/* View snippet dialog: dark theme */
+.app-view-snippet-dialog .mat-mdc-dialog-surface {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid #334155;
+}
+
 
 // @use '@angular/material' as mat;
 // @include mat.core();

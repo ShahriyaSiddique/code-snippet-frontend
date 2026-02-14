@@ -41,4 +41,16 @@ export class SnippetService {
   getSharedSnippets() {
     return this.http.get<ServerResponse<Snippet[]>>(`${this.apiUrl}/shared`);
   }
+
+  getPublicSnippets(): Observable<ServerResponse<Snippet[]>> {
+    return this.http.get<ServerResponse<Snippet[]>>(
+      `${environment.apiUrl}/public/snippets`
+    );
+  }
+
+  getPublicSnippetById(id: string): Observable<ServerResponse<Snippet>> {
+    return this.http.get<ServerResponse<Snippet>>(
+      `${environment.apiUrl}/public/snippets/${id}`
+    );
+  }
 }

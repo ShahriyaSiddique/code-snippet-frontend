@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "code-gist-frontend": {
+    "code-snippet-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/code-gist-frontend",
+            "outputPath": "dist/code-snippet-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "code-gist-frontend:build:production"
+              "buildTarget": "code-snippet-frontend:build:production"
             },
             "development": {
-              "buildTarget": "code-gist-frontend:build:development"
+              "buildTarget": "code-snippet-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
