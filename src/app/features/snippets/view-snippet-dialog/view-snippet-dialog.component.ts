@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { Snippet } from '../../../core/interfaces/snippet.interfaces';
+import { CodeMirrorDirective } from '../../../shared/directives/codemirror.directive';
 
 @Component({
   selector: 'app-view-snippet-dialog',
@@ -14,7 +15,8 @@ import { Snippet } from '../../../core/interfaces/snippet.interfaces';
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
-    MatChipsModule
+    MatChipsModule,
+    CodeMirrorDirective
   ],
   templateUrl: './view-snippet-dialog.component.html',
   styleUrls: ['./view-snippet-dialog.component.scss']

@@ -46,6 +46,8 @@ export class CodeMirrorDirective implements OnInit, OnDestroy, OnChanges {
   @Input() userColor = '#8b5cf6';
   /** When false, editor is local-only (no Yjs/WebSocket). Use for create page. */
   @Input() collaboration = true;
+  /** When true, editor is read-only. Use for view/preview. */
+  @Input() readOnly = false;
   @Output() codeChange = new EventEmitter<string>();
   @Output() usersChange = new EventEmitter<Array<{ name: string; color: string }>>();
 
@@ -111,7 +113,7 @@ export class CodeMirrorDirective implements OnInit, OnDestroy, OnChanges {
       syntaxHighlighting(myHighlightStyle),
       keymap.of([...defaultKeymap, ...closeBracketsKeymap, ...historyKeymap, indentWithTab]),
       EditorView.updateListener.of(update => {
-        if (update.docChanged) {
+        if (update.docChanged && !this.readOnly) {
           const newContent = update.state.doc.toString();
           this.codeChange.emit(newContent);
           if (syncToY && this.ytext) {
@@ -125,11 +127,11 @@ export class CodeMirrorDirective implements OnInit, OnDestroy, OnChanges {
           }
         }
       }),
-      EditorView.editable.of(true),
+      EditorView.editable.of(!this.readOnly),
       EditorView.theme({
         '&': { height: '100%', fontSize: '14px', backgroundColor: '#0f172a' },
         '.cm-scroller': { overflow: 'auto', height: '100%' },
-        '.cm-content': { fontFamily: 'monospace', padding: '10px', color: '#d4d4d4', minHeight: '100%', caretColor: '#d4d4d4' },
+        '.cm-content': { fontFamily: 'monospace', padding: '10px', color: '#d4d4d4', minHeight: '100%', caretColor: this.readOnly ? 'transparent' : '#d4d4d4' },
         '.cm-line': { padding: '0 3px', lineHeight: '1.6', fontFamily: 'monospace' },
         '.cm-matchingBracket': { backgroundColor: '#1e293b', color: '#8b5cf6' },
         '.cm-activeLine': { backgroundColor: 'rgba(139, 92, 246, 0.1)' },
