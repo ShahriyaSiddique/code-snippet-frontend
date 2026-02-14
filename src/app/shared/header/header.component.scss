@@ -49,16 +49,21 @@
     }
 
     &.create-btn {
-      background-color: #8b5cf6;
-      color: white;
+      background-color: #8b5cf6 !important;
+      color: #f8fafc !important;
       padding: 0.5rem 1rem;
-      border-radius: 6px;
-      display: flex;
+      border-radius: 8px;
+      display: inline-flex;
       align-items: center;
       gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      border: none;
 
       &:hover {
-        background-color: #7c3aed;
+        background-color: #7c3aed !important;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
       }
 
       mat-icon {
@@ -159,6 +164,29 @@
 
       &.active {
         color: #8b5cf6;
+      }
+
+      &.create-btn-mobile {
+        background-color: #8b5cf6 !important;
+        color: #f8fafc !important;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+        &:hover {
+          background-color: #7c3aed !important;
+        }
+
+        mat-icon {
+          font-size: 1.25rem;
+          width: 1.25rem;
+          height: 1.25rem;
+        }
       }
     }
 

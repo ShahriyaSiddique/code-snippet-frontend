@@ -7,10 +7,10 @@
     <div class="nav-links">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
       <a routerLink="/public" routerLinkActive="active">Public Snippets</a>
-      <a routerLink="/snippets" routerLinkActive="active">Snippets</a>
+      <a routerLink="/snippets" routerLinkActive="active">My Snippets</a>
       <a routerLink="/shared" routerLinkActive="active">Shared with Me</a>
       @if (authService.isAuthenticated()) {
-        <a routerLink="/snippets/create" routerLinkActive="active" class="create-btn">
+        <a mat-raised-button color="primary" routerLink="/snippets/create" routerLinkActive="active" class="create-btn">
           <mat-icon>add</mat-icon>
           Create Snippet
         </a>
@@ -38,10 +38,13 @@
       <div class="mobile-menu">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         <a routerLink="/public" routerLinkActive="active">Public Snippets</a>
-        <a routerLink="/snippets" routerLinkActive="active">Snippets</a>
+        <a routerLink="/snippets" routerLinkActive="active">My Snippets</a>
         <a routerLink="/shared" routerLinkActive="active">Shared with Me</a>
         @if (authService.isAuthenticated()) {
-          <a routerLink="/snippets/create" routerLinkActive="active">Create Snippet</a>
+          <a mat-raised-button color="primary" routerLink="/snippets/create" routerLinkActive="active" class="create-btn-mobile">
+          <mat-icon>add</mat-icon>
+          Create Snippet
+        </a>
           <button mat-button (click)="logout()">Logout</button>
         } @else {
           <a routerLink="/login" class="mobile-login">Login</a>
